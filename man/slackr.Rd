@@ -11,7 +11,8 @@ slackr(
   icon_emoji = Sys.getenv("SLACK_ICON_EMOJI"),
   token = Sys.getenv("SLACK_TOKEN"),
   thread_ts = NULL,
-  reply_broadcast = FALSE
+  reply_broadcast = FALSE,
+  print_fct_call = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ slackr(
 \item{thread_ts}{Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead.}
 
 \item{reply_broadcast}{Used in conjunction with thread_ts and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to FALSE.}
+
+\item{print_fct_call}{whether or not the function call should be printed with the output. Defaults to FALSE.}
 }
 \value{
 the response (invisibly)

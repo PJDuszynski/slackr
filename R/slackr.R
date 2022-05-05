@@ -16,6 +16,7 @@
 #' @param token Authentication token bearing required scopes.
 #' @param thread_ts Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead.
 #' @param reply_broadcast Used in conjunction with thread_ts and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to FALSE.
+#' @param print_fct_call whether or not the function call should be printed with the output. Defaults to FALSE.
 #' @return the response (invisibly)
 #' @note You need a <https://www.slack.com> account and will also need to
 #'       set up an API token <https://api.slack.com/>
@@ -33,7 +34,8 @@ slackr <- function(...,
                    icon_emoji = Sys.getenv("SLACK_ICON_EMOJI"),
                    token = Sys.getenv("SLACK_TOKEN"),
                    thread_ts = NULL,
-                   reply_broadcast = FALSE) {
+                   reply_broadcast = FALSE,
+                   print_fct_call = FALSE) {
 
   local_options(list(cli.num_colors = 1))
 
@@ -72,13 +74,13 @@ slackr <- function(...,
       tmp <- switch(mode(expr),
                     # if it's actually an expresison, iterate over it
                     expression = {
-                      cat(sprintf("> %s\n", deparse(expr)))
+                      if(print_fct_call == TRUE) cat(sprintf("> %s\n", deparse(expr)))
                       lapply(expr, evalVis)
                     },
                     # if it's a call or a name, eval, printing run output as if in console
                     call = ,
                     name = {
-                      cat(sprintf("> %s\n", deparse(expr)))
+                      if(print_fct_call == TRUE) cat(sprintf("> %s\n", deparse(expr)))
                       list(evalVis(expr))
                     },
                     # if pretty much anything else (i.e. a bare value) just output it
